@@ -50,7 +50,6 @@ RUN dpkg-divert --local --rename --add /sbin/initctl && \
     ssh \
     ssh-client \
     openssh-server \
-    ufw \
     fail2ban \
     git \
     wget \
@@ -61,21 +60,12 @@ RUN dpkg-divert --local --rename --add /sbin/initctl && \
     sudo \
     software-properties-common \
     vim-tiny && \
-
-
-# Install ansible
-
     apt-add-repository -y ppa:ansible/ansible && \
-    apt-get update && \
-    apt-get install -y ansible && \
-
-# Upgrade others
-# refer https://github.com/docker/docker/issues/1724
-
-    apt-get upgrade -y && \
-
-# cleanup
-    apt-get clean && \
+    apt update && \
+    apt install -y ansible && \
+    apt upgrade -y && \
+    apt autoremove -y && \
+    apt clean && \
 
 
 # setup ssh server
@@ -83,6 +73,7 @@ RUN dpkg-divert --local --rename --add /sbin/initctl && \
 # SSH login fix. Otherwise user is kicked off after login
 
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
+    sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
 
     echo "### End Of Installation"
 
@@ -134,3 +125,4 @@ VOLUME ["/var/run/sshd"]
 # Set default container command
 
 CMD ["/bin/bash","/hardening.sh"]
+CMD ["/usr/sbin/sshd", "-D"]

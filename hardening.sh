@@ -49,10 +49,10 @@ service ssh stop
 
 # docker run --privileged=true need to be used for iptables related.
 
-ufw allow 22/tcp
-ufw enable
-ufw status
-ufw default deny
+#ufw allow 22/tcp
+#ufw enable
+#ufw status
+#ufw default deny
 
 # Crete SSH Key
 
@@ -60,11 +60,11 @@ ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N ""
 
 # restart snort
 
-service snort restart
+##service snort restart
 
 #### Only ssh daemon will be the last execute
 # SSH run in foreground and not detached
 
-/usr/sbin/sshd -D
+#/usr/sbin/sshd -D
 
 exit 0

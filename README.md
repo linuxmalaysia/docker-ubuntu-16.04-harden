@@ -28,9 +28,15 @@ docker pull linuxmalaysia/docker-ubuntu-16.04-harden
 docker run --privileged=true -it -d -P --name my_ubuntu1 linuxmalaysia/docker-ubuntu-16.04-harden
 ```
 You can then use docker port to find out what host port, the container's port 22 is mapped to :-
+
 ```sh
-docker port my_ubuntu1 port 22
+docker port my_ubuntu1
 ```
+
+```sh
+docker port my_ubuntu1 port 22/tcp
+```
+
 ```sh
 ssh user1@localhost -p ?????
 ```
